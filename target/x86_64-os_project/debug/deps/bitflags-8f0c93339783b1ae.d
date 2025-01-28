@@ -1,0 +1,11 @@
+/home/fakawath/Code/rust/os_project/target/x86_64-os_project/debug/deps/libbitflags-8f0c93339783b1ae.rmeta: /home/fakawath/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.8.0/src/lib.rs /home/fakawath/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.8.0/src/iter.rs /home/fakawath/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.8.0/src/parser.rs /home/fakawath/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.8.0/src/traits.rs /home/fakawath/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.8.0/src/public.rs /home/fakawath/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.8.0/src/internal.rs /home/fakawath/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.8.0/src/external.rs
+
+/home/fakawath/Code/rust/os_project/target/x86_64-os_project/debug/deps/bitflags-8f0c93339783b1ae.d: /home/fakawath/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.8.0/src/lib.rs /home/fakawath/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.8.0/src/iter.rs /home/fakawath/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.8.0/src/parser.rs /home/fakawath/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.8.0/src/traits.rs /home/fakawath/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.8.0/src/public.rs /home/fakawath/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.8.0/src/internal.rs /home/fakawath/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.8.0/src/external.rs
+
+/home/fakawath/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.8.0/src/lib.rs:
+/home/fakawath/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.8.0/src/iter.rs:
+/home/fakawath/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.8.0/src/parser.rs:
+/home/fakawath/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.8.0/src/traits.rs:
+/home/fakawath/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.8.0/src/public.rs:
+/home/fakawath/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.8.0/src/internal.rs:
+/home/fakawath/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.8.0/src/external.rs:
