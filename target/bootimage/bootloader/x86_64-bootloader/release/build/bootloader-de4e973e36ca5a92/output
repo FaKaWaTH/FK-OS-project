@@ -1,7 +1,0 @@
-cargo:rerun-if-changed=/home/fakawath/Code/rust/os_project/Cargo.toml
-cargo:rustc-link-search=native=/home/fakawath/Code/rust/os_project/target/bootimage/bootloader/x86_64-bootloader/release/build/bootloader-de4e973e36ca5a92/out
-cargo:rustc-link-lib=static=kernel_bin-os_project
-cargo:rerun-if-env-changed=KERNEL
-cargo:rerun-if-env-changed=KERNEL_MANIFEST
-cargo:rerun-if-changed=/home/fakawath/Code/rust/os_project/target/x86_64-os_project/debug/os_project
-cargo:rerun-if-changed=build.rs
