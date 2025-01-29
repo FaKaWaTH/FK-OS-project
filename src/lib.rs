@@ -17,6 +17,7 @@ pub mod gdt;
 pub mod memory;
 pub mod allocator;
 pub mod task;
+pub mod rtc;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[repr(u32)]
@@ -39,11 +40,16 @@ pub fn init() {
     interrupts::init_idt();
     unsafe { interrupts::PICS.lock().initialize() };
     x86_64::instructions::interrupts::enable();
+
+    let (second, minute, hour, day, month, year) = rtc::read_rtc();
+    println!("{}:{}:{}\n{}/{}/{}", hour, minute, second, day, month, year);
 }
 
 pub fn hlt_loop() -> ! {
     loop { x86_64::instructions::hlt(); }
 }
+
+
 
 pub trait Testable {
     fn run(&self) -> ();
