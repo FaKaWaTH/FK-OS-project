@@ -1,7 +1,10 @@
 use alloc::{collections::BTreeMap, sync::Arc, task::Wake};
 use crossbeam_queue::ArrayQueue;
-use core::task::{Waker, Context, Poll};
+use futures_util::task::AtomicWaker;
+use core::{future::Future, sync::atomic::{AtomicBool, Ordering}, task::{Context, Poll, Waker}};
 use super::{Task, TaskId};
+
+pub static WAKE_RTC_TASK: AtomicWaker = AtomicWaker::new();
 
 pub struct Executor {
     tasks: BTreeMap<TaskId, Task>,
@@ -103,5 +106,28 @@ impl Wake for TaskWaker {
 
     fn wake_by_ref(self: &Arc<Self>) {
         self.wake_task();
+    }
+}
+
+pub struct YieldNow {
+    yielded: AtomicBool,
+}
+
+impl Future for YieldNow {
+    type Output = ();
+
+    fn poll(self: core::pin::Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<()> {
+        if self.yielded.swap(true, Ordering::Relaxed) {
+            Poll::Ready(())
+        } else {
+            cx.waker().wake_by_ref();
+            Poll::Pending
+        }
+    }
+}
+
+pub fn yield_now() -> YieldNow {
+    YieldNow {
+        yielded: AtomicBool::new(false),
     }
 }

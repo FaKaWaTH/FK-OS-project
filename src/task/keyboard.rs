@@ -7,6 +7,8 @@ use core::{pin::Pin, task::{Poll, Context}};
 
 use crate::{print, println};
 
+use super::executor::yield_now;
+
 static SCANCODE_QUEUE: OnceCell<ArrayQueue<u8>> = OnceCell::uninit();
 static WAKER: AtomicWaker = AtomicWaker::new();
 
@@ -29,6 +31,8 @@ pub async fn print_keypresses() {
             }
         }
     }
+
+    yield_now().await;
 } 
 
 pub(crate) fn add_scancode(scancode: u8) {
