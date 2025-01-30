@@ -1,7 +1,7 @@
 use x86_64::{registers::control::Cr2, structures::idt::{InterruptDescriptorTable, InterruptStackFrame, PageFaultErrorCode}};
 use pic8259::ChainedPics;
 use lazy_static::lazy_static;
-use crate::{gdt, hlt_loop, println};
+use crate::{gdt, hlt_loop, println, task::executor::WAKE_RTC_TASK};
 
 pub const PIC_1_OFFSET: u8 = 32;
 pub const PIC_2_OFFSET: u8 = PIC_1_OFFSET + 8;
@@ -11,6 +11,7 @@ pub const PIC_2_OFFSET: u8 = PIC_1_OFFSET + 8;
 pub enum InterruptIndex {
     Timer = PIC_1_OFFSET,
     Keyboard,
+    Rtc = PIC_2_OFFSET
 }
 
 impl InterruptIndex {
@@ -46,8 +47,23 @@ lazy_static! {
             .set_handler_fn(keyboard_interrupt_handler);
 
         idt.page_fault.set_handler_fn(page_fault_handler);
+
+        idt[InterruptIndex::Rtc.as_usize()].set_handler_fn(rtc_interrupt_handler);
+        
         idt
     };
+}
+
+pub extern "x86-interrupt" fn rtc_interrupt_handler(_stack_frame: InterruptStackFrame) {
+    println!("RTC interrupt");
+
+    WAKE_RTC_TASK.wake();
+
+    unsafe {
+        x86_64::instructions::port::PortReadOnly::<u8>::new(0x70).read();
+        x86_64::instructions::port::PortReadOnly::<u8>::new(0x71).read();
+
+    }
 }
 
 extern "x86-interrupt" fn page_fault_handler(
@@ -102,5 +118,4 @@ extern "x86-interrupt" fn double_fault_handler(
 
 pub fn init_idt() {
     IDT.load();
-
 }

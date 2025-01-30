@@ -1,4 +1,9 @@
+// can be better
+
 use core::arch::asm;
+
+const WRITE_PORT: u16 = 0x70;
+const READ_PORT: u16 = 0x71;
 
 fn out_byte(port: u16, value: u8) {
     unsafe {
@@ -16,14 +21,38 @@ fn in_byte(port: u16) -> u8 {
     value
 }
 
+fn disable_nmi() {
+    out_byte(WRITE_PORT, in_byte(WRITE_PORT) | 0x80);
+}
+
+fn _enable_nmi() {
+    out_byte(WRITE_PORT, in_byte(WRITE_PORT) | 0x7F);
+}
+
 fn update_flag() -> bool {
-    out_byte(0x70, 0x0a);
-    (in_byte(0x71) & 0x80) != 0
+    out_byte(WRITE_PORT, 0x0A);
+    (in_byte(READ_PORT) & 0x80) != 0
 }
 
 fn rtc_register(register: u8) -> u8 {
-    out_byte(0x70, register);
-    in_byte(0x71)
+    out_byte(WRITE_PORT, register);
+    in_byte(READ_PORT)
+}
+
+pub fn init_rtc() {
+    disable_nmi();
+    
+    out_byte(WRITE_PORT, 0x8A);
+    let prev = in_byte(READ_PORT);
+
+    // set 1Hz
+    out_byte(WRITE_PORT, 0x8A);
+    out_byte(READ_PORT, prev & 0xF0 | 0b0110);
+
+    out_byte(WRITE_PORT, 0x8B);
+    let prev = in_byte(READ_PORT);
+    out_byte(WRITE_PORT, 0x8B);
+    out_byte(READ_PORT, prev | 0x40);
 }
 
 pub fn read_rtc() -> (u8, u8, u8, u8, u8, u8) {
@@ -40,26 +69,16 @@ pub fn read_rtc() -> (u8, u8, u8, u8, u8, u8) {
     month = rtc_register(0x08);
     year = rtc_register(0x09);
 
-    register_b = rtc_register(0x0b);
-
-    if register_b & 0x04 == 0 {
-        second = (second & 0x0f) + ((second / 16) * 10);
-        minute = (minute & 0x0f) + ((minute / 16) * 10);
-        hour = (hour & 0x0f) + (((hour & 0x70) / 16) * 10);
-        day = (day & 0x0f) + ((day / 16) * 10);
-        month = (month & 0x0f) + ((month / 16) * 10);
-        year = (year & 0x0f) + ((year / 16) * 10);
-    }
-     
-    if (register_b & 0x02) == 0 {
-        if hour & 0x80 != 0 {
-            if hour & 0x7f != 12 {
-                hour = ((hour & 0x7f) +12) % 24;
-            }
-        } else if hour == 12 {
-            hour = 0;
-        }
-    }
+    register_b = rtc_register(0x0B);
     
+    if register_b & 0x04 == 0 {
+        second = (second & 0x0F) + ((second / 16) * 10);
+        minute = (minute & 0x0F) + ((minute / 16) * 10);
+        hour = (hour & 0x0F) + (((hour & 0x70) / 16) * 10);
+        day = (day & 0x0F) + ((day / 16) * 10);
+        month = (month & 0x0F) + ((month / 16) * 10);
+        year = (year & 0x0F) + ((year / 16) * 10);
+    }
+
     (second, minute, hour, day, month, year)
 }
