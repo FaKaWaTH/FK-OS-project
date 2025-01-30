@@ -55,7 +55,7 @@ fn panic(info: &PanicInfo) -> ! {
 }
 
 async fn date_time() {
-    let mut last_tape = (0, 0, 0, 0, 0, 0);
+    //let mut last_tape = (0, 0, 0, 0, 0, 0);
 
     //loop {
         poll_fn(|cx| {
@@ -66,13 +66,14 @@ async fn date_time() {
 
         let (second, minute, hour, day, month, year) = os_project::rtc::read_rtc();
 
-        if last_tape != (second, minute, hour, day, month, year) {
+        //if last_tape != (second, minute, hour, day, month, year) {
             println!(
                 "{}:{}:{}\t\t\t{}/{}/{}",
                 hour, minute, second, day, month, year
             );
-            last_tape = (second, minute, hour, day, month, year);
-        }
+
+            //last_tape = (second, minute, hour, day, month, year);
+        //}
     //}
 }
 
