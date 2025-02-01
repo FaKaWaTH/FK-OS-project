@@ -7,7 +7,11 @@ const READ_PORT: u16 = 0x71;
 
 fn out_byte(port: u16, value: u8) {
     unsafe {
-        asm!("out dx,al", in("dx") port, in("al") value);
+        asm!(
+            "out dx,al",
+            in("dx") port,
+            in("al") value
+        );
     }
 }
 
@@ -15,7 +19,11 @@ fn in_byte(port: u16) -> u8 {
     let mut value: u8;
 
     unsafe {
-        asm!("in al, dx", in("dx") port, out("al") value);
+        asm!(
+            "in al, dx", 
+            in("dx") port, 
+            out("al") value
+        );
     }
 
     value
