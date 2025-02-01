@@ -30,9 +30,10 @@ pub async fn print_keypresses() {
                 }
             }
         }
+        
+        yield_now().await;
     }
 
-    yield_now().await;
 } 
 
 pub(crate) fn add_scancode(scancode: u8) {
@@ -79,9 +80,8 @@ impl Stream for ScancodeStream{
 
         match queue.pop() {
             Some(scancode) => {
-                WAKER.take(); 
-                Poll::Ready(Some(scancode))
-            },
+                WAKER.take();
+                Poll::Ready(Some(scancode))},
             None => Poll::Pending,
         }
     }
