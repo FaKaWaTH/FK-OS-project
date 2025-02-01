@@ -11,7 +11,7 @@ use core::{future::poll_fn, panic::PanicInfo, task::Poll};
 use os_project::{
     println,
     task::{
-        executor::{Executor, WAKE_RTC_TASK},
+        executor::{yield_now, Executor, WAKE_RTC_TASK},
         keyboard, Task,
     },
 };
@@ -55,26 +55,30 @@ fn panic(info: &PanicInfo) -> ! {
 }
 
 async fn date_time() {
-    //let mut last_tape = (0, 0, 0, 0, 0, 0);
+    let mut last_time = os_project::rtc::read_rtc();
 
-    //loop {
+    loop {
         poll_fn(|cx| {
             WAKE_RTC_TASK.register(cx.waker());
             Poll::Ready(())
         })
         .await;
 
-        let (second, minute, hour, day, month, year) = os_project::rtc::read_rtc();
+        let current_time = os_project::rtc::read_rtc();
 
-        //if last_tape != (second, minute, hour, day, month, year) {
+        if current_time != last_time {
+            let (second, minute, hour, day, month, year) = current_time;
+        
             println!(
                 "{}:{}:{}\t\t\t{}/{}/{}",
                 hour, minute, second, day, month, year
             );
 
-            //last_tape = (second, minute, hour, day, month, year);
-        //}
-    //}
+            last_time = current_time;
+        }
+
+        yield_now().await;
+    }
 }
 
 #[cfg(test)]
