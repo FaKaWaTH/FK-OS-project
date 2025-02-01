@@ -5,9 +5,7 @@ use futures_util::{stream::Stream, task::AtomicWaker, StreamExt};
 use pc_keyboard::{layouts, DecodedKey, HandleControl, Keyboard, ScancodeSet1};
 use core::{pin::Pin, task::{Poll, Context}};
 
-use crate::{print, println};
-
-use super::executor::yield_now;
+use crate::{print, println, task::executor::yield_now};
 
 static SCANCODE_QUEUE: OnceCell<ArrayQueue<u8>> = OnceCell::uninit();
 static WAKER: AtomicWaker = AtomicWaker::new();

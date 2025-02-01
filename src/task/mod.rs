@@ -1,7 +1,6 @@
 use core::{future::Future, pin::Pin, task::{Context, Poll}, sync::atomic::{AtomicU64, Ordering}};
 use alloc::boxed::Box;
 
-pub mod keyboard;
 pub mod executor;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]

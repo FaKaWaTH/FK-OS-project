@@ -10,14 +10,12 @@ extern crate alloc;
 
 use core::panic::PanicInfo;
 
-pub mod serial;
-pub mod vga_buffer;
 pub mod interrupts;
 pub mod gdt;
 pub mod memory;
 pub mod allocator;
 pub mod task;
-pub mod rtc;
+pub mod io;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[repr(u32)]
@@ -40,7 +38,7 @@ pub fn init() {
     interrupts::init_idt();
     unsafe { interrupts::PICS.lock().initialize() };
     x86_64::instructions::interrupts::enable();
-    rtc::init_rtc();
+    io::rtc::init_rtc();
 }
 
 pub fn hlt_loop() -> ! {

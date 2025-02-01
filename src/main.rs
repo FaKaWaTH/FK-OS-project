@@ -9,11 +9,10 @@ extern crate alloc;
 use bootloader::{entry_point, BootInfo};
 use core::{future::poll_fn, panic::PanicInfo, task::Poll};
 use os_project::{
-    println,
-    task::{
+    io, println, task::{
         executor::{yield_now, Executor, WAKE_RTC_TASK},
-        keyboard, Task,
-    },
+        Task,
+    }
 };
 
 entry_point!(kernel_main);
@@ -41,7 +40,7 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
     test_main();
 
     let mut executor = Executor::new();
-    executor.spawn(Task::new(keyboard::print_keypresses()));
+    executor.spawn(Task::new(io::keyboard::print_keypresses()));
     executor.spawn(Task::new(date_time()));
     executor.run();
 }
@@ -55,7 +54,7 @@ fn panic(info: &PanicInfo) -> ! {
 }
 
 async fn date_time() {
-    let mut last_time = os_project::rtc::read_rtc();
+    let mut last_time = os_project::io::rtc::read_rtc();
 
     loop {
         poll_fn(|cx| {
@@ -64,7 +63,7 @@ async fn date_time() {
         })
         .await;
 
-        let current_time = os_project::rtc::read_rtc();
+        let current_time = os_project::io::rtc::read_rtc();
 
         if current_time != last_time {
             let (second, minute, hour, day, month, year) = current_time;
