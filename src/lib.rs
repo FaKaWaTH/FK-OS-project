@@ -16,6 +16,7 @@ pub mod memory;
 pub mod allocator;
 pub mod task;
 pub mod io;
+pub mod sleep;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[repr(u32)]

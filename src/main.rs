@@ -7,10 +7,10 @@
 extern crate alloc;
 
 use bootloader::{entry_point, BootInfo};
-use core::{future::poll_fn, panic::PanicInfo, task::Poll};
+use core::panic::PanicInfo;
 use os_project::{
-    io, println, task::{
-        executor::{yield_now, Executor, WAKE_RTC_TASK},
+    io, println, sleep, task::{
+        executor::Executor,
         Task,
     }
 };
@@ -41,8 +41,10 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
 
     let mut executor = Executor::new();
     executor.spawn(Task::new(io::keyboard::print_keypresses()));
-    executor.spawn(Task::new(date_time()));
+    executor.spawn(Task::new(test_sleep()));
+    //executor.spawn(Task::new(date_time()));
     executor.run();
+
 }
 
 #[cfg(not(test))]
@@ -53,7 +55,19 @@ fn panic(info: &PanicInfo) -> ! {
     os_project::hlt_loop();
 }
 
+async fn test_sleep() {
+    println!("Wait 3 sec");
+
+    sleep::sleep(3).await;
+
+    println!("3sec after");
+}
+
+/*
 async fn date_time() {
+    use core::{future::poll_fn, task::Poll};
+    use os_project::task::executor::{WAKE_RTC_TASK, yield_now};
+    
     let mut last_time = os_project::io::rtc::read_rtc();
 
     loop {
@@ -75,10 +89,10 @@ async fn date_time() {
 
             last_time = current_time;
         }
-
         yield_now().await;
     }
 }
+*/
 
 #[cfg(test)]
 #[panic_handler]
