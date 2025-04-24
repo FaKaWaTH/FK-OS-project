@@ -1,4 +1,4 @@
-## trying to create an operating system
+## Trying to create an operating system
 
 ### Features
 
