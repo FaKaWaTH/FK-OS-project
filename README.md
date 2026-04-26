@@ -13,6 +13,9 @@ Rtc (Clock and date)
     x86-64 CPU (real or virtualized)
     Qemu
     Rust-nightly
+    Cargo bootimage
+    rustup component toolchain nightly-x86_64-unknown-linux-gnu
+    rustup component llvm-tools-preview
 
 ## How run it?
-    cargo run
+    cargo +nightly build -Zjson-target-spec

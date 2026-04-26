@@ -28,9 +28,9 @@ checksum = "8f68f53c83ab957f72c32642f3868eec03eb974d1fb82e453128456482613d36"
 
 [[package]]
 name = "bootloader"
-version = "0.9.29"
+version = "0.9.34"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "365861702868e2a37b4247aaecc7bd8f4389baec8d025497ad8ba7ff37ee9440"
+checksum = "13f6a8a495d2f93fe3d6eb3a224f9aa749a63cfd746ed03eb5ddcbd00ade7d8f"
 
 [[package]]
 name = "conquer-once"
