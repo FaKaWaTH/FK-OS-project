@@ -18,4 +18,4 @@ Rtc (Clock and date)
     rustup component llvm-tools-preview
 
 ## How run it?
-    cargo +nightly build -Zjson-target-spec
+    cargo run
